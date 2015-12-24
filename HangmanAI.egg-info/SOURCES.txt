@@ -1,6 +1,6 @@
 COPYING.txt
 MANIFEST.in
-README.txt
+setup.cfg
 setup.py
 HangmanAI/Automate.py
 HangmanAI/Hangman.py
