@@ -3,7 +3,7 @@ from setuptools import setup
 setup(
     name = 'HangmanAI',
     packages = ['HangmanAI'],
-    version = '0.0.2',
+    version = '0.0.3',
     description = 'Hangman AI game -- computer vs. computer',
     author='Gurkirat Singh',
     author_email='tablags100@gmail.com',

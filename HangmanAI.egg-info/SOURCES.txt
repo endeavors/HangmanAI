@@ -5,6 +5,7 @@ setup.py
 HangmanAI/Automate.py
 HangmanAI/Hangman.py
 HangmanAI/ModDict.py
+HangmanAI/__init__.py
 HangmanAI.egg-info/PKG-INFO
 HangmanAI.egg-info/SOURCES.txt
 HangmanAI.egg-info/dependency_links.txt
