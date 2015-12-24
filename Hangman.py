@@ -59,7 +59,7 @@ def initializeState():
 			inc += 1
 	
 def binarySearch(word,wordList):
-
+	
 	list_len = len(wordList)
 	if (list_len == 0): 
 		return False
@@ -93,14 +93,15 @@ def requireInput():
 		str_input = raw_input("--> Enter input: ")
 		global split_input_list
 		split_input_list = str_input.lower().split()
+		
 		if len(split_input_list) > MAX_WORDS: 
 			print "Maximum string length is 10\n"
 			continue
 
 		dirty_list = filter(lambda x: binarySearch(x, ModDict.modDict.get(str(len(x)))) == 0,\
 			split_input_list)
-	
-		if (len(dirty_list) != 0):
+		
+		if (dirty_list == None or len(dirty_list) != 0):
 			print "The following words are not found in the dictionary:",\
 				",".join(dirty_list), ". Re-enter input.\n"
 		else:
@@ -125,6 +126,7 @@ def preProcessor():
 				break
 
 			elif input_choice == "2":
+				print "here"
 				requireInput()
 				break
 			elif input_choice == "out":
