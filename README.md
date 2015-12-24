@@ -72,4 +72,4 @@ ALL COMPLETED! SOLVED!
 TRIES LEFT: 3 out of 3
 
 ####Flow Diagram for input above:
-![alt text](https://raw.githubusercontent.com/endeavors/Hangman-AI/master/HangmanAI/hangman_graph.png)
+![alt text](https://raw.githubusercontent.com/endeavors/HangmanAI/master/hangman_graph.png)
