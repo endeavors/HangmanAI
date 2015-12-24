@@ -9,7 +9,7 @@ setup(
     author_email='tablags100@gmail.com',
     url='https://github.com/endeavors',
     keywords=['hangman','AI','game','code'],
-    download_url='https://github.com/endeavors/Hangman-AI/tarball/0.1',
+    download_url='https://github.com/endeavors/HangmanAI/tarball/0.1',
     classifiers=[
         'Programming Language :: Python',
         'Programming Language :: Python :: 2',
