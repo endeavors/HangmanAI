@@ -126,7 +126,6 @@ def preProcessor():
 				break
 
 			elif input_choice == "2":
-				print "here"
 				requireInput()
 				break
 			elif input_choice == "out":
@@ -253,7 +252,7 @@ def runGame():
 if __name__=='__main__':
 
 	graphviz = GraphvizOutput()
-	graphviz.output_file = 'hangman_graph.png'
+	graphviz.output_file = 'flow_graph.png'
 
 	with PyCallGraph(output=graphviz):
     
