@@ -11,7 +11,7 @@ You can keep playing the game as many times you wish and see in the generated fl
 Feel free to point out any bugs/improve it.
 
 ###Sample Input
-
+```
 1 : Generate input for me
 2 : Enter custom input
 Type 'out' to exit program
@@ -70,6 +70,6 @@ pardy stoutheartedly valetudinarians cusp portion
 ALL COMPLETED! SOLVED!
 
 TRIES LEFT: 3 out of 3
-
+```
 ####Flow Diagram for input above:
 ![alt text](https://raw.githubusercontent.com/endeavors/HangmanAI/master/hangman_graph.png)
