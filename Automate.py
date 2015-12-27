@@ -10,7 +10,6 @@ def clearAll():
 	sortedList.clear()
 
 def prepForValidFoundSet(letter_set):
-	
 	if len(sortedList) > 0 and sortedList[-1][0] != 2:
 		sortedList.clear()
 
@@ -23,15 +22,32 @@ def prepForValidFoundSet(letter_set):
 		if is_in_list == 0 and x not in maxFreqSet:		
 			sortedList.add((2,x))
 
+def addMostUniqueCharToList(letter):
+	val = 0
+	idx = -1
+
+	for i,v in enumerate(reversed(sortedList)):
+		if v[1] == letter:
+			val = v[0]
+			idx = i
+			break
+
+	if val == 0:
+		sortedList.add((1.5,letter))
+	elif val != 2 or val != 1.5:
+		del sortedList[idx]
+		sortedList.add((1.5,letter))
+
 def evalWeight(weight_dict, ttl_chars_cnt):
 	global sortedList
+
 	sortedList.clear()
 	for char,charCnt in weight_dict.iteritems():
 		wratio = charCnt/float(ttl_chars_cnt)
 		sortedList.add((wratio,char))
 
 def popMaxWeightChar():
-
+ 
 	#return just the character with the highest priority
 	if (len(sortedList) > 0):
 		maxWeight = sortedList.pop()
@@ -39,6 +55,8 @@ def popMaxWeightChar():
 		while maxWeight[1] in maxFreqSet:
 			if len(sortedList) > 0:
 				maxWeight = sortedList.pop()
+			else:
+				return None
 
 		maxFreqSet.add(maxWeight[1])
 		return maxWeight[1]
@@ -53,7 +71,7 @@ def calculateLetterWeightOfList(weighted_List, createSet):
 		each_idx_dict = {}
 		
 		for idx, eachSet in enumerate(weighted_List):
-
+			
 			if eachSet is not None and len(eachSet) != 0:
 				val_set = next(iter(eachSet))
 				if createSet and len(val_set) in initSet:

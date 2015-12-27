@@ -6,27 +6,37 @@ from pycallgraph.output import GraphvizOutput
 MAX_WORDS = 10 #default
 MIN_WORDS = 1
 MAX_STR_LEN = 15 #largest len found in dictionary provided
-TRIES = 3
+TRIES = 6
 input_choice = 0
 split_input_list = []
 weighted_list = []
 fill_factor_list = []
 indices_list = []
+toAvg = False
 
+#run the code below whether or not the module is imported or run directly
+graphviz = GraphvizOutput()
+graphviz.output_file = 'flow_graph.png'
+
+with PyCallGraph(output=graphviz):
+	isPassed = ModDict.loadAllDicts()
+	if (not isPassed): 
+		sys.exit("File not found in current directory")
 
 def playGame():
 
 	global TRIES
 	while TRIES != 0:
 		ret = updateState() #retrieve the highest probablistic character
-		printState()
+		if not toAvg: printState()
 		if (ret == 1 or (ret == -1 and TRIES == 0)):
-			if ret == -1:
-				print "DEAD -- Game Over"
-			else:
-				print "ALL COMPLETED! SOLVED!"
-			displayStats()
-			rerunGame()
+			if not toAvg:
+				if ret == -1:
+					print "DEAD -- Game Over"
+				else:
+					print "ALL COMPLETED! SOLVED!"
+				displayStats()
+				rerunGame()
 			break
 
 		#if only our guess was correct
@@ -82,7 +92,7 @@ def generate_input():
 		str_len = str(randint(MIN_WORDS,MAX_STR_LEN))
 		while (str_len not in ModDict.modDict):
 			str_len = str(randint(MIN_WORDS,MAX_STR_LEN))
-		
+			
 		array = ModDict.modDict.get(str_len)
 		chosen_word = array[randint(0,len(array) - 1)]
 		ret_list.append(chosen_word.lower())
@@ -110,6 +120,11 @@ def requireInput():
 
 def preProcessor():
 	global split_input_list,input_choice
+
+	if toAvg:
+		input_choice = 1
+		split_input_list = generate_input()
+		return
 
 	while (True):
 		print "1 : Generate input for me"
@@ -142,13 +157,15 @@ def updateState():
 	prev_inc = 0
 	letter_found = 0
 
-	guess = (Automate.popMaxWeightChar()).lower()
+	guess = Automate.popMaxWeightChar()
 
-	print "Guess:", guess
-
+	if not toAvg: print "Guess:", guess
+	
 	if (guess != None):
+		guess = guess.lower()
+		
 		for index,word in enumerate(split_input_list):
-
+			
 			if fill_factor_list[index] == 1.0:
 				prev_inc += len(word) + 1 
 				continue
@@ -157,10 +174,9 @@ def updateState():
 			
 			#merge lists
 			indices_list[index] = indices_list[index] + idx_list
+			
 			for x in idx_list:
 				res_list[prev_inc + x] = guess
-
-			
 			if (len(idx_list) > 0):
 
 				#our guess was correct
@@ -185,7 +201,7 @@ def updateState():
 				fill_factor_list[index] = len(indices_list[index])/float(len(word))
 
 				#we found the word; now we pick the letters in the word as our next guesses
-				if len(weighted_list[index]) == 1:
+				if len(weighted_list[index]) == 1 and fill_factor_list[index] < 1:
 					Automate.prepForValidFoundSet(set(weighted_list[index][0]))
 					
 			else:
@@ -200,30 +216,33 @@ def updateState():
 
 			prev_inc += len(word) + 1 #account for space
 	else:
-		print "Cannot generate any more guesses. Crash!"
-		rerunGame()
+		print "no guess"
+		if not toAvg: 
+			print "Cannot generate any more guesses."
+			rerunGame()
 
 	not_filled_list = [i for i,val in enumerate(fill_factor_list) if val < 1]
 
 	#there is no point of picking word with highest frequency if the 
 	#word was chosen randomly by generator
-	dirty_list = [x for x in indices_list if len(word) - len(x) > 2]
+	dirty_list = [x for i,x in enumerate(indices_list) if len(split_input_list[i]) - len(x) <= 2]
 	if input_choice != "1" and len(dirty_list) == 0 and len(not_filled_list) !=0:
 		if len(Automate.sortedList) == 0 or Automate.sortedList[-1][0] != 2:
 			#all chars are distinct at this condition, so look for word frequency
 			for x in not_filled_list:
-				idxLeft = set(range(len(word))) - set(indices_list[index])
+				idxLeft = set(range(len(split_input_list[x]))) - set(indices_list[x])
 				if len(idxLeft) > 0:
 					idxLeft = idxLeft.pop()
 					maxFreqSet = Automate.createWordFreqSortedList(weighted_list[x])
-					Automate.sortedList.add((1.5, maxFreqSet[-1][1][idxLeft])) 
+					Automate.addMostUniqueCharToList(maxFreqSet[-1][1][idxLeft])
+					
 
 	if len(not_filled_list) == 0:
 		return 1
 
 	if (letter_found == 0):
 		TRIES -= 1
-		displayStats()
+		if not toAvg: displayStats()
 		return -1
 
 	return 0
@@ -246,27 +265,22 @@ def runGame():
 	indices_list = [[]] * len(split_input_list)
 	
 	initializeState()
-	printState()
+	if not toAvg: printState()
 	playGame()
+
+def main(getAvg=False):
+
+	global toAvg, TRIES
 	
+	if getAvg:
+		toAvg = True
+	
+	preProcessor()
+	runGame()
+	return TRIES			
+
 if __name__=='__main__':
-
-	graphviz = GraphvizOutput()
-	graphviz.output_file = 'flow_graph.png'
-
-	with PyCallGraph(output=graphviz):
-    
-		print "Processing dictionary only one time..."
-	
-		isPassed = ModDict.loadAllDicts()
-		if (not isPassed): 
-			sys.exit("File not found in current directory")
-
-		print "Finished!"
-	
-		preProcessor()
-		runGame()
-	
+	main()
 
 
 

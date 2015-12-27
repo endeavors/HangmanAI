@@ -6,6 +6,9 @@ modDict = {}
 freqDict = {}
 
 def createModDict():
+
+	print "Processing lexicon..."
+
 	with open('dict.txt','r') as data_file:
 		for word in data_file:
 			word = word.strip().lower()
@@ -19,6 +22,8 @@ def createModDict():
 
 	with open ('ModDict.json', 'w') as outfile:
 		json.dump(modDict, outfile, sort_keys=True, indent = 4, ensure_ascii=False)
+
+	print "Finished!"
 
 def loadAllDicts():
 
@@ -49,6 +54,8 @@ def loadAllDicts():
 
 def parseFreqDict():
 	
+	print "Processing word frequency dictionary..."
+
 	with open('freq.txt','r') as data_file:
 		for line in data_file:
 			freqLine = map(lambda x: x.strip(),line.lower().split())
@@ -56,3 +63,6 @@ def parseFreqDict():
 			
 	with open ('FreqDict.json', 'w') as outfile:
 		json.dump(freqDict, outfile, sort_keys=True, indent = 4, ensure_ascii=False)
+
+	print "Finished!"
+	
