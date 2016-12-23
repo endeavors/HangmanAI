@@ -277,7 +277,6 @@ def main(getAvg=False):
 	
 	preProcessor()
 	runGame()
-	return TRIES			
 
 if __name__=='__main__':
 	main()
