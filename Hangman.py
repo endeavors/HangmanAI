@@ -269,8 +269,7 @@ def runGame():
 	playGame()
 
 def main(getAvg=False):
-
-	global toAvg, TRIES
+	global toAvg
 	
 	if getAvg:
 		toAvg = True
